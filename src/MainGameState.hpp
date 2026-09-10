@@ -1,10 +1,14 @@
 #pragma once
 #include <GameState.hpp>
+#include <deque>
 
-struct Bird {
-    float x, y;
-    float vy;
-};
+extern "C" {
+    #include <raylib.h>
+}
+
+struct Bird { float x, y; float vy; };
+
+struct PipePair { Rectangle top, bot; bool scored = false; };
 
 class MainGameState : public GameState
 {
@@ -24,4 +28,14 @@ class MainGameState : public GameState
     private:
         char entered_key;
         Bird player;
+        std::deque<PipePair> pipes;
+        float spawnTimer;
+        float spawnEvery = 1.5f;
+
+        static constexpr float GRAVEDAD = 400.0f;
+        static const int PIPE_GAP = 150;
+        static const int PIPE_WIDTH = 60;
+        static constexpr float PIPE_SPEED = 200.0f;
+        static const int PIPE_W = 32;
+        static const int PIPE_H = 320;
 };
