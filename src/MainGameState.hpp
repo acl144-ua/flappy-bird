@@ -1,5 +1,6 @@
 #pragma once
 #include <GameState.hpp>
+#include <GameOverState.hpp>
 #include <deque>
 
 extern "C" {
@@ -31,7 +32,9 @@ class MainGameState : public GameState
         std::deque<PipePair> pipes;
         float spawnTimer;
         float spawnEvery = 1.5f;
+        Rectangle boundingBox;
 
+        static const int RADIUS = 17;
         static constexpr float GRAVEDAD = 400.0f;
         static const int PIPE_GAP = 150;
         static const int PIPE_WIDTH = 60;

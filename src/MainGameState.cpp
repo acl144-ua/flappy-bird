@@ -1,5 +1,6 @@
 #include <MainGameState.hpp>
 #include <iostream>
+#include "StateMachine.hpp"
 
 MainGameState::MainGameState() : player{200, 200, 0}
 {
@@ -23,6 +24,8 @@ void MainGameState::update(float deltaTime)
     player.y += player.vy * deltaTime;
     player.vy = 0;
 
+    boundingBox = { player.x-RADIUS, player.y-RADIUS, RADIUS, RADIUS };
+
     // Pipes spawn
     spawnTimer += deltaTime;
     if (spawnTimer >= spawnEvery) {
@@ -43,6 +46,12 @@ void MainGameState::update(float deltaTime)
         pipe.bot.x -= PIPE_SPEED * deltaTime;
     }
 
+    for (const auto& pipe : pipes) {
+        if (CheckCollisionRecs(pipe.top, boundingBox) || CheckCollisionRecs(pipe.bot, boundingBox)) {
+            this->state_machine->add_state(std::make_unique<GameOverState>(), true);
+        }
+    }
+
     // Delete pipes out of screen
     if (!pipes.empty() && pipes.front().top.x + PIPE_W < 0) {
         pipes.pop_front();
@@ -54,12 +63,14 @@ void MainGameState::render()
     BeginDrawing();
     ClearBackground(WHITE);
     DrawText("Bienvenido a Flappy Bird DCA.", 10, 10, 20, BLACK);
-    EndDrawing();
 
     for (const auto& pipe : pipes) {
         DrawRectangle(pipe.top.x, pipe.top.y, pipe.top.width, pipe.top.height, GREEN);
         DrawRectangle(pipe.bot.x, pipe.bot.y, pipe.bot.width, pipe.bot.height, GREEN);
     }
 
-    DrawCircle(player.x, player.y, 17, RED);
+    DrawCircle(player.x, player.y, RADIUS, RED);
+    DrawRectanglePro(boundingBox, {0,0}, 0, BLUE);
+
+    EndDrawing();
 }
