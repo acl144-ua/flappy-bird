@@ -23,6 +23,8 @@ int main()
         state_machine.getCurrentState()->handleInput();
         state_machine.getCurrentState()->update(delta_time);
         state_machine.getCurrentState()->render();       
+
+        delta_time = GetFrameTime();
     }
 
     return 0;
