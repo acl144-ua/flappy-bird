@@ -33,6 +33,7 @@ class MainGameState : public GameState
         float spawnTimer;
         float spawnEvery = 1.5f;
         Rectangle boundingBox;
+        int score;
 
         static const int RADIUS = 17;
         static constexpr float GRAVEDAD = 400.0f;

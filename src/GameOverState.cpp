@@ -3,11 +3,17 @@
 #include "StateMachine.hpp"
 #include "MainGameState.hpp"
 
+GameOverState::GameOverState(int score)
+{
+    finalScore = score;
+}
+
 void GameOverState::init(){}
 
 void GameOverState::handleInput()
 {
-    if(IsKeyPressed(KEY_SPACE)) {
+    if(IsKeyPressed(KEY_SPACE))
+    {
         this->state_machine->add_state(std::make_unique<MainGameState>(), true);
     }
 }
@@ -24,6 +30,8 @@ void GameOverState::render()
     int posX = (GetScreenWidth() - textWidth) / 2;
     int posY = (GetScreenHeight() - fontSize) / 2;
     DrawText("Game Over", posX, posY, fontSize, RED);
+
+    DrawText(std::to_string(finalScore).c_str(), posX + 100, posY + 50, fontSize, BLACK);
 
     EndDrawing();
 }

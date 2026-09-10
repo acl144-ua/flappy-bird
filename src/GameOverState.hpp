@@ -7,10 +7,14 @@ extern "C" {
 
 class GameOverState : public GameState {
     public:
+        GameOverState(int score);
         void init() override;
         void handleInput() override;
         void update(float deltaTime) override;
         void render() override;
         void pause() override;
         void resume() override;
+
+    private:
+        int finalScore;
 };

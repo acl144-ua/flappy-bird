@@ -28,7 +28,8 @@ void MainGameState::update(float deltaTime)
 
     // Pipes spawn
     spawnTimer += deltaTime;
-    if (spawnTimer >= spawnEvery) {
+    if (spawnTimer >= spawnEvery)
+    {
         spawnTimer = 0;
 
         int pipe_y_offset_top = GetRandomValue(PIPE_H/2, GetScreenWidth()/2);
@@ -41,19 +42,26 @@ void MainGameState::update(float deltaTime)
     }
 
     // Move pipes position
-    for (auto& pipe : pipes) {
+    for (auto& pipe : pipes)
+    {
         pipe.top.x -= PIPE_SPEED * deltaTime;
         pipe.bot.x -= PIPE_SPEED * deltaTime;
-    }
 
-    for (const auto& pipe : pipes) {
-        if (CheckCollisionRecs(pipe.top, boundingBox) || CheckCollisionRecs(pipe.bot, boundingBox)) {
-            this->state_machine->add_state(std::make_unique<GameOverState>(), true);
+        if (CheckCollisionRecs(pipe.top, boundingBox) || CheckCollisionRecs(pipe.bot, boundingBox))
+        {
+            this->state_machine->add_state(std::make_unique<GameOverState>(score), true);
+        }
+
+        if ((pipe.top.x + PIPE_W < player.x) && !pipe.scored)
+        {
+            score++;
+            pipe.scored = true;
         }
     }
 
     // Delete pipes out of screen
-    if (!pipes.empty() && pipes.front().top.x + PIPE_W < 0) {
+    if (!pipes.empty() && pipes.front().top.x + PIPE_W < 0)
+    {
         pipes.pop_front();
     }
 }
@@ -64,13 +72,18 @@ void MainGameState::render()
     ClearBackground(WHITE);
     DrawText("Bienvenido a Flappy Bird DCA.", 10, 10, 20, BLACK);
 
-    for (const auto& pipe : pipes) {
+    for (const auto& pipe : pipes)
+    {
         DrawRectangle(pipe.top.x, pipe.top.y, pipe.top.width, pipe.top.height, GREEN);
         DrawRectangle(pipe.bot.x, pipe.bot.y, pipe.bot.width, pipe.bot.height, GREEN);
     }
 
+    int textWidth = MeasureText(std::to_string(score).c_str(), 40);
+    int posX = (GetScreenWidth() - textWidth) / 2;
+    DrawText(std::to_string(score).c_str(), posX, 30, 40, BLACK);
+
     DrawCircle(player.x, player.y, RADIUS, RED);
-    DrawRectanglePro(boundingBox, {0,0}, 0, BLUE);
+    //DrawRectanglePro(boundingBox, {0,0}, 0, BLUE);
 
     EndDrawing();
 }
