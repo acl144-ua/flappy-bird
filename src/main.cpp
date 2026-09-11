@@ -11,11 +11,11 @@ int main()
 { 
     float delta_time = 0.0f;
 
+    InitWindow(288, 512, "Flapy Bird");
+
     StateMachine state_machine = StateMachine();
     state_machine.add_state(std::make_unique<MainGameState>(), false);
     state_machine.handle_state_changes(delta_time);
-
-    InitWindow(288, 512, "Flapy Bird");
 
     while (!state_machine.is_game_ending())
     {

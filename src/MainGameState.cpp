@@ -9,7 +9,16 @@ MainGameState::MainGameState() : player{200, 200, 0}
 
 void MainGameState::init()
 {
+    birdSprite = LoadTexture("assets/bluebird-midflap.png");
+    pipeSprite = LoadTexture("assets/pipe-green.png");
 
+    player.width = birdSprite.width;
+    player.height = birdSprite.height;
+
+    PIPE_W = pipeSprite.width;
+    PIPE_H = pipeSprite.height;
+
+    PIPE_GAP = player.height + EXTRA_H;
 }
 
 void MainGameState::handleInput()
@@ -24,7 +33,8 @@ void MainGameState::update(float deltaTime)
     player.y += player.vy * deltaTime;
     player.vy = 0;
 
-    boundingBox = { player.x-RADIUS, player.y-RADIUS, RADIUS, RADIUS };
+    //boundingBox = { player.x-RADIUS, player.y-RADIUS, RADIUS, RADIUS };
+    boundingBox = { player.x - player.width/2, player.y - player.height/2, player.width, player.height };
 
     // Pipes spawn
     spawnTimer += deltaTime;
@@ -50,6 +60,7 @@ void MainGameState::update(float deltaTime)
         if (CheckCollisionRecs(pipe.top, boundingBox) || CheckCollisionRecs(pipe.bot, boundingBox))
         {
             this->state_machine->add_state(std::make_unique<GameOverState>(score), true);
+            score = 0;
         }
 
         if ((pipe.top.x + PIPE_W < player.x) && !pipe.scored)
@@ -74,15 +85,16 @@ void MainGameState::render()
 
     for (const auto& pipe : pipes)
     {
-        DrawRectangle(pipe.top.x, pipe.top.y, pipe.top.width, pipe.top.height, GREEN);
-        DrawRectangle(pipe.bot.x, pipe.bot.y, pipe.bot.width, pipe.bot.height, GREEN);
+        DrawTextureEx(this->pipeSprite, {pipe.top.x + PIPE_W, pipe.top.y + PIPE_H}, 180.f, 1.0f, WHITE);
+        DrawTextureEx(this->pipeSprite, {pipe.bot.x , pipe.bot.y}, 0.f, 1.0f, WHITE);
     }
 
     int textWidth = MeasureText(std::to_string(score).c_str(), 40);
     int posX = (GetScreenWidth() - textWidth) / 2;
     DrawText(std::to_string(score).c_str(), posX, 30, 40, BLACK);
 
-    DrawCircle(player.x, player.y, RADIUS, RED);
+    //DrawCircle(player.x, player.y, RADIUS, RED);
+    DrawTexture(birdSprite, player.x - player.width/2, player.y - player.height/2, WHITE);
     //DrawRectanglePro(boundingBox, {0,0}, 0, BLUE);
 
     EndDrawing();

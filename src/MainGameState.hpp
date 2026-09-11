@@ -7,7 +7,7 @@ extern "C" {
     #include <raylib.h>
 }
 
-struct Bird { float x, y; float vy; };
+struct Bird { float x, y; float vy; float height, width; };
 
 struct PipePair { Rectangle top, bot; bool scored = false; };
 
@@ -34,12 +34,15 @@ class MainGameState : public GameState
         float spawnEvery = 1.5f;
         Rectangle boundingBox;
         int score;
+        Texture2D birdSprite;
+        Texture2D pipeSprite;
 
-        static const int RADIUS = 17;
-        static constexpr float GRAVEDAD = 400.0f;
-        static const int PIPE_GAP = 150;
-        static const int PIPE_WIDTH = 60;
-        static constexpr float PIPE_SPEED = 200.0f;
-        static const int PIPE_W = 32;
-        static const int PIPE_H = 320;
+        int RADIUS = 17;
+        float GRAVEDAD = 400.0f;
+        float PIPE_GAP;
+        float PIPE_SPEED = 200.0f;
+        int PIPE_W;
+        int PIPE_H;
+
+        static constexpr float EXTRA_H = 4.5;
 };
