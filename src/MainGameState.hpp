@@ -36,12 +36,15 @@ class MainGameState : public GameState
         Rectangle boundingBox;
         int score = 0;
         Texture2D birdSprite;
+        std::vector<Texture2D> birdFrames;
         Texture2D pipeSprite;
         Sound jumpSound;
         Sound scoreSound;
         Sound hitSound;
         Sound dieSound;
         std::vector<Texture2D> digitSprites;
+        int currentFrame = 0;
+        float frameTimer = 0;
 
         int RADIUS = 17;
         float GRAVEDAD = 400.0f;

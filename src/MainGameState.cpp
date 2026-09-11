@@ -9,11 +9,14 @@ MainGameState::MainGameState() : player{200, 200, 0}
 
 void MainGameState::init()
 {
-    birdSprite = LoadTexture("assets/bluebird-midflap.png");
+    birdFrames.push_back(LoadTexture("assets/bluebird-downflap.png"));
+    birdFrames.push_back(LoadTexture("assets/bluebird-midflap.png"));
+    birdFrames.push_back(LoadTexture("assets/bluebird-upflap.png"));
+    //birdSprite = LoadTexture("assets/bluebird-midflap.png");
     pipeSprite = LoadTexture("assets/pipe-green.png");
 
-    player.width = birdSprite.width;
-    player.height = birdSprite.height;
+    player.width = birdFrames[0].width;
+    player.height = birdFrames[0].height;
 
     PIPE_W = pipeSprite.width;
     PIPE_H = pipeSprite.height;
@@ -93,6 +96,14 @@ void MainGameState::update(float deltaTime)
     {
         pipes.pop_front();
     }
+
+    // Bird frames control
+    frameTimer += deltaTime;
+    if (frameTimer >= 0.1f)
+    {
+        frameTimer = 0;
+        currentFrame = (currentFrame + 1) % 3;
+    }
 }
 
 void MainGameState::render()
@@ -133,7 +144,7 @@ void MainGameState::render()
     }
 
     //DrawCircle(player.x, player.y, RADIUS, RED);
-    DrawTexture(birdSprite, player.x - player.width/2, player.y - player.height/2, WHITE);
+    DrawTexture(birdFrames[currentFrame], player.x - player.width/2, player.y - player.height/2, WHITE);
     //DrawRectanglePro(boundingBox, {0,0}, 0, BLUE);
 
     EndDrawing();
