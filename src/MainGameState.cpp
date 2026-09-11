@@ -24,6 +24,11 @@ void MainGameState::init()
     scoreSound = LoadSound("audio/point.wav");
     dieSound = LoadSound("audio/die.wav");
     hitSound = LoadSound("audio/hit.wav");
+
+    for (int i = 0; i < 10; i++)
+    {
+        digitSprites.push_back(LoadTexture(("assets/" + std::to_string(i) + ".png").c_str()));
+    }
 }
 
 void MainGameState::handleInput()
@@ -102,9 +107,30 @@ void MainGameState::render()
         DrawTextureEx(this->pipeSprite, {pipe.bot.x , pipe.bot.y}, 0.f, 1.0f, WHITE);
     }
 
-    int textWidth = MeasureText(std::to_string(score).c_str(), 40);
-    int posX = (GetScreenWidth() - textWidth) / 2;
-    DrawText(std::to_string(score).c_str(), posX, 30, 40, BLACK);
+    //int textWidth = MeasureText(std::to_string(score).c_str(), 40);
+    //int posX = (GetScreenWidth() - textWidth) / 2;
+    //DrawText(std::to_string(score).c_str(), posX, 30, 40, BLACK);
+    std::string scoreStr = std::to_string(score);
+
+    // Calculate total width
+    int totalWidth = 0;
+    for (char c : scoreStr)
+    {
+        int digit = c - '0';
+        totalWidth += digitSprites[digit].width;
+    }
+
+    // Calculate posX to center score
+    int posX = (GetScreenWidth() - totalWidth) / 2;
+    int posY = 10;
+
+    // Displaying digits without obstruction
+    for (char c : scoreStr)
+    {
+        int digit = c - '0';
+        DrawTexture(digitSprites[digit], posX, posY, WHITE);
+        posX += digitSprites[digit].width;
+    }
 
     //DrawCircle(player.x, player.y, RADIUS, RED);
     DrawTexture(birdSprite, player.x - player.width/2, player.y - player.height/2, WHITE);

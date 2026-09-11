@@ -2,6 +2,7 @@
 #include <GameState.hpp>
 #include <GameOverState.hpp>
 #include <deque>
+#include <vector>
 
 extern "C" {
     #include <raylib.h>
@@ -40,6 +41,7 @@ class MainGameState : public GameState
         Sound scoreSound;
         Sound hitSound;
         Sound dieSound;
+        std::vector<Texture2D> digitSprites;
 
         int RADIUS = 17;
         float GRAVEDAD = 400.0f;
