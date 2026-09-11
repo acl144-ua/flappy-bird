@@ -33,9 +33,13 @@ class MainGameState : public GameState
         float spawnTimer;
         float spawnEvery = 1.5f;
         Rectangle boundingBox;
-        int score;
+        int score = 0;
         Texture2D birdSprite;
         Texture2D pipeSprite;
+        Sound jumpSound;
+        Sound scoreSound;
+        Sound hitSound;
+        Sound dieSound;
 
         int RADIUS = 17;
         float GRAVEDAD = 400.0f;

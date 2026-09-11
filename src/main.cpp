@@ -12,6 +12,7 @@ int main()
     float delta_time = 0.0f;
 
     InitWindow(288, 512, "Flapy Bird");
+    InitAudioDevice();
 
     StateMachine state_machine = StateMachine();
     state_machine.add_state(std::make_unique<MainGameState>(), false);
