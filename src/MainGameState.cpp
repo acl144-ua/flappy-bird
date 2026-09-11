@@ -77,6 +77,8 @@ void MainGameState::update(float deltaTime)
         {
             score++;
             PlaySound(scoreSound);
+            PIPE_GAP -= 0.1;
+            PIPE_SPEED += 1;
             pipe.scored = true;
         }
     }
