@@ -47,7 +47,7 @@ void MainGameState::update(float deltaTime)
 {
     player.vy += GRAVEDAD * deltaTime;
     player.y += player.vy * deltaTime;
-    player.vy = 0;
+    //player.vy = 0;
 
     //boundingBox = { player.x-RADIUS, player.y-RADIUS, RADIUS, RADIUS };
     boundingBox = { player.x - player.width/2, player.y - player.height/2, player.width, player.height };
